@@ -106,27 +106,40 @@ lprofiler_stats_tostr_all(buffer, sizeof(buffer));
 
 ## Example
 
+The following example should work as-is when compiled in a linux/gcc environment
+Compile with: gcc -o test test.c lprofiler.c
+
 ```c
 #include "lprofiler.h"
 #include <stdio.h>
+#include <time.h>
 
+// Function to get the current tick count
 uint32_t get_ticks() {
-    // Example implementation, replace with actual tick function
     return (uint32_t)clock();
 }
 
-int example_function(int arg) {
-    // Simulate work
-    for (volatile int i = 0; i < 1000000; ++i);
+// Function to be profiled
+int test_function(int arg) {
+    int t = clock();
+    while (clock() - t < (CLOCKS_PER_SEC*arg/1000));
     return arg;
 }
 
 int main() {
-    lprofiler_init(get_ticks, 1000.0f);
+    // Initialize the profiler
+    lprofiler_init(get_ticks, CLOCKS_PER_SEC/1000);
 
+    // Profile the function
     int ret;
-    LPROFILE("example_function", ret = example_function(42));
 
+    for(int i = 0; i < 200; i++) {
+        LPROFILE("test_function_19ms", ret = test_function(19));
+        LPROFILE("test_function_30ms", ret = test_function(30));
+        LPROFILE("test_function_1ms", ret = test_function(1));
+    }
+
+    // Print all profiling statistics
     lprofiler_stats_print_all();
     return 0;
 }
