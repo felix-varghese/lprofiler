@@ -7,7 +7,7 @@
 
 ## Features
 
-- Easy-to-use interface for profiling code blocks
+- Easy-to-use functions for quickly profiling C code
 - Measures average and maximum execution times
 - Macro for convenient in-place profiling
 - Easy to setup and use, no non-standard dependencies
@@ -145,10 +145,17 @@ int main() {
 }
 ```
 
+Output:
+```
+test_function_19ms: Avg 19.000000ms (19000), Max 19.009001ms (19009)
+test_function_30ms: Avg 30.000000ms (30000), Max 30.080000ms (30080)
+test_function_1ms: Avg 1.000000ms (1000), Max 1.004000ms (1004)
+```
+
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ---
 
-`lprofiler` provides a straightforward and efficient way to measure and analyze the performance of your C code
+`lprofiler` provides a straightforward and quick way to measure and analyze the performance of your C code, without needing a lot of overhead or setup time.
