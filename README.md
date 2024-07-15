@@ -19,6 +19,59 @@ Simply include `lprofiler.h` and `lprofiler.c` in your project. No external depe
 
 ## Usage
 
+### Quick-start / Example
+
+The following example should work as-is when compiled in a linux/gcc environment.
+
+Compile with:
+```
+gcc -o test test.c lprofiler.c
+```
+
+Code:
+```c
+#include "lprofiler.h"
+#include <stdio.h>
+#include <time.h>
+
+// Function to get the current tick count
+uint32_t get_ticks() {
+    return (uint32_t)clock();
+}
+
+// Function to be profiled
+int test_function(int arg) {
+    int t = clock();
+    while (clock() - t < (CLOCKS_PER_SEC*arg/1000));
+    return arg;
+}
+
+int main() {
+    // Initialize the profiler
+    lprofiler_init(get_ticks, CLOCKS_PER_SEC/1000);
+
+    // Profile the function
+    int ret;
+
+    for(int i = 0; i < 200; i++) {
+        LPROFILE("test_function_19ms", ret = test_function(19));
+        LPROFILE("test_function_30ms", ret = test_function(30));
+        LPROFILE("test_function_1ms", ret = test_function(1));
+    }
+
+    // Print all profiling statistics
+    lprofiler_stats_print_all();
+    return 0;
+}
+```
+
+Output:
+```
+test_function_19ms: Avg 19.000000ms (19000), Max 19.009001ms (19009)
+test_function_30ms: Avg 30.000000ms (30000), Max 30.080000ms (30080)
+test_function_1ms: Avg 1.000000ms (1000), Max 1.004000ms (1004)
+```
+
 ### Initialization
 
 Initialize the profiler with a function to get the current tick count and the number of ticks per millisecond:
@@ -102,59 +155,6 @@ Convert the statistics of a specific instance or all instances to a string:
 char buffer[256];
 lprofiler_stats_tostr(profiler_instance, buffer, sizeof(buffer));
 lprofiler_stats_tostr_all(buffer, sizeof(buffer));
-```
-
-## Example
-
-The following example should work as-is when compiled in a linux/gcc environment.
-
-Compile with:
-```
-gcc -o test test.c lprofiler.c
-```
-
-Code:
-```c
-#include "lprofiler.h"
-#include <stdio.h>
-#include <time.h>
-
-// Function to get the current tick count
-uint32_t get_ticks() {
-    return (uint32_t)clock();
-}
-
-// Function to be profiled
-int test_function(int arg) {
-    int t = clock();
-    while (clock() - t < (CLOCKS_PER_SEC*arg/1000));
-    return arg;
-}
-
-int main() {
-    // Initialize the profiler
-    lprofiler_init(get_ticks, CLOCKS_PER_SEC/1000);
-
-    // Profile the function
-    int ret;
-
-    for(int i = 0; i < 200; i++) {
-        LPROFILE("test_function_19ms", ret = test_function(19));
-        LPROFILE("test_function_30ms", ret = test_function(30));
-        LPROFILE("test_function_1ms", ret = test_function(1));
-    }
-
-    // Print all profiling statistics
-    lprofiler_stats_print_all();
-    return 0;
-}
-```
-
-Output:
-```
-test_function_19ms: Avg 19.000000ms (19000), Max 19.009001ms (19009)
-test_function_30ms: Avg 30.000000ms (30000), Max 30.080000ms (30080)
-test_function_1ms: Avg 1.000000ms (1000), Max 1.004000ms (1004)
 ```
 
 ## License
