@@ -106,9 +106,14 @@ lprofiler_stats_tostr_all(buffer, sizeof(buffer));
 
 ## Example
 
-The following example should work as-is when compiled in a linux/gcc environment
-Compile with: gcc -o test test.c lprofiler.c
+The following example should work as-is when compiled in a linux/gcc environment.
 
+Compile with:
+```
+gcc -o test test.c lprofiler.c
+```
+
+Code:
 ```c
 #include "lprofiler.h"
 #include <stdio.h>
