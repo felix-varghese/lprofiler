@@ -3,25 +3,24 @@
 
 ## Overview
 
-`lprofiler` is a lightweight profiling library for C that allows you to measure and analyze the performance of different code blocks by tracking their execution times. It helps identify performance bottlenecks and optimize code efficiency.
+`lprofiler` is a lightweight cross-platform profiling library for C that allows you to measure and analyze the performance of blocks of code. Use it with your (embedded) C code to identify performance bottlenecks.
 
 ## Features
 
-- Easy-to-use functions for quickly profiling C code
+- Cross-platform, dependency-free
+- Easy-to-use, in-place profiling support (see usage)
 - Measures average and maximum execution times
-- Macro for convenient in-place profiling
-- Easy to setup and use, no non-standard dependencies
 - Easy to extend with your own functionality
 
 ## Installation
 
-Simply include `lprofiler.h` and `lprofiler.c` in your project. No external dependencies are required.
+Include `lprofiler.h` and `lprofiler.c` in your project. No external dependencies are required.
 
 ## Usage
 
 ### Quick-start / Example
 
-The following example should work as-is when compiled in a linux/gcc environment.
+The following example should work as-is when compiled in a linux/gcc environment. You might need to customize the get_ticks() function for embedded platforms.
 
 Compile with:
 ```
